@@ -1,0 +1,267 @@
+---
+title: "Can we understand the distribution of a variable using music?"
+authors: 
+  - name: Donya Behroozi, Dr. Julia Schedler, Dr. Sinem Demirci
+    affiliations: 
+    - name: Statistics Department, Bailey College of Science and Mathematics
+format: 
+  html:
+    embed-resources: true
+---
+
+```{r}
+#| label: setup_and_import
+#| echo: false
+#| message: false
+
+library(tidyverse)
+library(gm);
+library(music)
+
+source("data_to_sonif.r")
+
+## music setup
+
+## source https://gist.github.com/dimitre/439f5ab75a0c2e66c8c63fc9e8f7ea77
+
+freq_notes_all <- read.csv("note_freq_440_432.csv")
+freq_notes_all$note_names <- paste0(freq_notes_all$A,freq_notes_all$X0)
+
+
+## filter to 2 octaves
+freq_notes <- freq_notes_all %>% filter(X0 %in% c(4, 5)) %>% add_row(freq_notes_all[63,])
+getnotenames <- freq_notes$note_names
+names(getnotenames) <- freq_notes$X27.5
+
+
+## read in the data 
+
+urb_T_all <- read.csv("urban_tree.csv")
+
+
+## just keep the raw data
+
+urb_T <- urb_T_all[,1:9]
+## rename variables for easier coding
+names(urb_T) <- c("tract", "county", "city","zip", "heat",
+                  "pov", "asth","pm2_5","canopy")
+## reproduce Aaron's computations
+urb_T <- urb_T %>%
+    mutate(
+      heat_s = scale(heat),
+      pov_s = scale(pov),
+      asth_s = scale(asth),
+      pm2_5_s = scale(pm2_5),
+      canopy_s = scale(canopy),
+      vuln = heat_s + pov_s + asth_s + pm2_5_s
+    )
+```
+
+## Can you hear the shape of a distribution?
+
+We have visualized 6 different variables containing data about the Central Coast area. Each distribution has a different shape, which you can see by looking at the histogram of each variable.
+
+Each of the lines on the histogram represents the cutoff for 25% of the data, which gives us a five number summary.
+
+| Statistic in 5 Number Summary | Meaning |
+|------------------------|------------------------|
+| [Minimum]{style="background-color:#7570B3; color:white; display:block; text-align:center;"} | smallest value in the data set |
+| [Q1]{style="background-color:#1B9E77; color:white; display:block; text-align:center;"} | upper limit of smallest 25% of data values |
+| [Median]{style="background-color:#E6AB02; color:white; display:block; text-align:center;"} | middle value (50% of data values above and below this number) |
+| [Q3]{style="background-color:#D95F02; color:white; display:block; text-align:center;"} | lower limit of largest 25% of data values |
+| [Maximum]{style="background-color:#E7298A; color:white; display:block; text-align:center;"} | the largest value in the data set |
+
+: Color Legend
+
+We have also created sonifications of the five number summary then converted those numbers to music. The middle of the distribution is played first, then the 5 number summary is played.
+
+Do your ear and your eye agree? Visit the QR code to listen!
+
+### Severe Heat Incidence
+
+Percentage of census tracts that are hotter than the average temperature for the entire city.
+
+```{r}
+#| label: vis-sonif-heat
+#| echo: false
+
+  notes_list <-  NULL
+  sonif <- data_to_sonif(as.vector(urb_T$heat))
+  pattern <- c(1, rep(0.5, times = 5), 0.5)
+  line_heat <- Line(pitches = sonif, durations = pattern, name = "Severe Heat")
+  music_indiv <- Music() + Meter(4,4) + line_heat + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")
+  #fname = paste0("music/dist_", var_names[i], ".mp3")
+  #export(music, path = paste(fname) )
+  show(music_indiv, to = "score")
+  
+urb_T %>% ggplot(aes(x = heat)) + geom_histogram(bins = 25) + geom_vline(xintercept = summary(urb_T$heat)[c(1,2,4:6)], col = c("#7570B3", "#1B9E77", "#E6AB02", "#D95F02", "#E7298A"), lwd = 2) + theme(panel.grid = element_blank(), plot.background = element_blank()) + ylab("Number of Neighborhoods") + xlab("Severe Heat Index")
+```
+
+### Percent of Population in poverty
+
+Specifically, the percentage of the population living below two times the federal poverty level.
+
+```{r}
+#| label: vis-sonif-pov
+#| echo: false
+
+  notes_list <-  NULL
+  music_all <- Music() + Meter(4,4) 
+  
+  sonif <- data_to_sonif(as.vector(urb_T$pov))
+  pattern <- c(1, rep(0.5, times = 5), 0.5)
+  line_pov <- Line(pitches = sonif, durations = pattern, name = "Poverty")
+  music_indiv <- Music() + Meter(4,4) + line_pov + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")
+  #fname = paste0("music/dist_", var_names[i], ".mp3")
+  #export(music, path = paste(fname) )
+  show(music_indiv)
+
+  urb_T %>% ggplot(aes(x = pov)) + geom_histogram(bins = 25) + geom_vline(xintercept = summary(urb_T$pov)[c(1,2,4:6)], col = c("#7570B3", "#1B9E77", "#E6AB02", "#D95F02", "#E7298A"), lwd = 2) + theme(panel.grid = element_blank(), plot.background = element_blank()) + ylab("Number of Neighborhoods") + xlab("% Poverty")
+
+
+```
+
+### Asthma-related emergency visits
+
+Specifically, the age-adjusted rate of emergency department visits for asthma.
+
+```{r}
+#| label: vis-sonif-asth
+#| echo: false
+
+
+  notes_list <-  NULL
+  music_all <- Music() + Meter(4,4) 
+  
+  sonif <- data_to_sonif(as.vector(urb_T$asth))
+  pattern <- c(1, rep(0.5, times = 5), 0.5)
+  line_asth <- Line(pitches = sonif, durations = pattern, name = "Emergency Asthma")
+  music_indiv <- Music() + Meter(4,4) + line_asth + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")
+  #fname = paste0("music/dist_", var_names[i], ".mp3")
+  #export(music, path = paste(fname) )
+  show(music_indiv)
+
+urb_T %>% ggplot(aes(x = asth)) + geom_histogram(bins = 25) + geom_vline(xintercept = summary(urb_T$asth)[c(1,2,4:6)], col = c("#7570B3", "#1B9E77", "#E6AB02", "#D95F02", "#E7298A"), lwd = 2) + theme(panel.grid = element_blank(), plot.background = element_blank()) + ylab("Number of Neighborhoods") + xlab("Age-adjusted emergency visits for Asthma")
+
+```
+
+### Annual Average Air Pollution
+
+Specifically, the annual mean concentration of particulate matter in the air for the given region.
+
+```{r}
+#| label: vis-sonif-pm2_5
+#| echo: false
+
+
+  notes_list <-  NULL
+  music_all <- Music() + Meter(4,4) 
+  
+  sonif <- data_to_sonif(as.vector(urb_T$pm2_5))
+  pattern <- c(1, rep(0.5, times = 5), 0.5)
+  line_pm <- Line(pitches = sonif, durations = pattern, name = "Air Pollution")
+  music_indiv <- Music() + Meter(4,4) + line_pm + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")
+  #fname = paste0("music/dist_", var_names[i], ".mp3")
+  #export(music, path = paste(fname) )
+  show(music_indiv)
+
+  urb_T %>% ggplot(aes(x = pm2_5)) + geom_histogram(bins = 25) + geom_vline(xintercept = summary(urb_T$pm2_5)[c(1,2,4:6)], col = c("#7570B3", "#1B9E77", "#E6AB02", "#D95F02", "#E7298A"), lwd = 2) + theme(panel.grid = element_blank(), plot.background = element_blank()) + ylab("Number of Neighborhoods") + xlab("Annual mean PM 2.5 concentrations in air pollution.")
+```
+
+
+```{r}
+#| label: vis-sonif-vuln
+#| echo: false
+#| eval: false
+
+### Vulnerability
+
+The vulnerability index is a variable we created as follows:
+
+1.  Standardize the variables by subtracting the average and dividing by the standard deviation, for example:
+
+    $$
+    \text{Standardized % Poverty} = \frac{\text{\% in Poverty} - \text{Average \% in Poverty}}{\text{Standard Deviation of \% in Poverty}}
+    $$
+    Negative standardized values indicate a neighborhood/region with lower than average % poverty relative to the broader central coast area, and the more negative the value is the more unusually low that neighborhood is in comparison to other regions
+
+2.  Create the vulnerability index by adding these standardized values"
+
+    \begin{aligned}
+    \text{Vulnerability Index } = &\text{ Standardized Heat Severity} +  \text{Standardized \% Poverty}\\ &+  \text{Standardized Asthma Emergency} +  \text{Standardized PM 2.5}
+    \end{aligned}
+
+  notes_list <-  NULL
+  music_all <- Music() + Meter(4,4) 
+  
+  sonif <- data_to_sonif(as.vector(urb_T$vuln))
+  pattern <- c(1, rep(0.5, times = 5), 0.5)
+  line_vuln <- Line(pitches = sonif, durations = pattern, name = "Vulnerability Index")
+  music_indiv <- Music() + Meter(4,4) + line_vuln + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")
+  show(music_indiv)
+
+  urb_T %>% ggplot(aes(x = vuln)) + geom_histogram(bins = 25) + 
+  geom_vline(xintercept = summary(as.numeric(urb_T$vuln))[c(1,2,4:6)], col = c("#7570B3", "#1B9E77", "#E6AB02", "#D95F02", "#E7298A"), lwd = 2) + theme(panel.grid = element_blank(), plot.background = element_blank()) + ylab("Number of Neighborhoods") + xlab("Vulnerability Index")
+```
+
+### % Tree Canopy Cover
+
+The percentage of area with tree canopy cover in 2018.
+
+```{r}
+#| label: vis-sonif-canopy
+#| echo: false
+
+  notes_list <-  NULL
+  music_all <- Music() + Meter(4,4) 
+  
+  sonif <- data_to_sonif(as.vector(urb_T$canopy))
+  pattern <- c(1, rep(0.5, times = 5), 0.5)
+  line_canopy <- Line(pitches = sonif, durations = pattern, name = "Tree Canopy %")
+  music_indiv <- Music() + Meter(4,4) + line_canopy + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")
+  #fname = paste0("music/dist_", var_names[i], ".mp3")
+  #export(music, path = paste(fname) )
+  show(music_indiv)
+
+  urb_T %>% ggplot(aes(x = canopy)) + geom_histogram(bins = 25) + geom_vline(xintercept = summary(urb_T$canopy)[c(1,2,4:6)], col = c("#7570B3", "#1B9E77", "#E6AB02", "#D95F02", "#E7298A"), lwd = 2) + theme(panel.grid = element_blank(), plot.background = element_blank()) + ylab("Number of Neighborhoods") + xlab("% Tree Canopy Cover")
+
+```
+
+## Playing all Variables at Once
+
+There is no singular way to visualize all 5 variables at once, since we can only use 3 spatial dimensions for a visual. What do they all *sound* like played together?
+
+```{r}
+#| label: all
+#| echo: false
+music_all_variables <- Music() + Meter(4,4) + 
+                          line_heat + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")+
+                          line_pov +  Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")+
+                          line_asth + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")+
+                          line_pm + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")+ 
+                          line_canopy + Notehead(1, shape = "diamond", color = "#E6AB02") + Notehead(2, shape = "diamond", color = "#7570B3") +  Notehead(3, shape = "diamond", color = "#1B9E77") + Notehead(4, shape = "diamond", color = "#E6AB02")+
+  Notehead(5, shape = "diamond", color = "#D95F02")+
+ Notehead(6, shape = "diamond", color = "#E7298A")
+
+show(music_all_variables)
+```

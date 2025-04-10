@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Can we understand the distribution of a variable using music?",
+    "section": "",
+    "text": "We have visualized 6 different variables containing data about the Central Coast area. Each distribution has a different shape, which you can see by looking at the histogram of each variable.\nEach of the lines on the histogram represents the cutoff for 25% of the data, which gives us a five number summary.\n\nColor Legend\n\n\n\n\n\n\nStatistic in 5 Number Summary\nMeaning\n\n\n\n\nMinimum\nsmallest value in the data set\n\n\nQ1\nupper limit of smallest 25% of data values\n\n\nMedian\nmiddle value (50% of data values above and below this number)\n\n\nQ3\nlower limit of largest 25% of data values\n\n\nMaximum\nthe largest value in the data set\n\n\n\nWe have also created sonifications of the five number summary then converted those numbers to music. The middle of the distribution is played first, then the 5 number summary is played.\nDo your ear and your eye agree? Visit the QR code to listen!\n\n\nPercentage of census tracts that are hotter than the average temperature for the entire city.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpecifically, the percentage of the population living below two times the federal poverty level.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpecifically, the age-adjusted rate of emergency department visits for asthma.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpecifically, the annual mean concentration of particulate matter in the air for the given region.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe percentage of area with tree canopy cover in 2018."
+  },
+  {
+    "objectID": "index.html#can-you-hear-the-shape-of-a-distribution",
+    "href": "index.html#can-you-hear-the-shape-of-a-distribution",
+    "title": "Can we understand the distribution of a variable using music?",
+    "section": "",
+    "text": "We have visualized 6 different variables containing data about the Central Coast area. Each distribution has a different shape, which you can see by looking at the histogram of each variable.\nEach of the lines on the histogram represents the cutoff for 25% of the data, which gives us a five number summary.\n\nColor Legend\n\n\n\n\n\n\nStatistic in 5 Number Summary\nMeaning\n\n\n\n\nMinimum\nsmallest value in the data set\n\n\nQ1\nupper limit of smallest 25% of data values\n\n\nMedian\nmiddle value (50% of data values above and below this number)\n\n\nQ3\nlower limit of largest 25% of data values\n\n\nMaximum\nthe largest value in the data set\n\n\n\nWe have also created sonifications of the five number summary then converted those numbers to music. The middle of the distribution is played first, then the 5 number summary is played.\nDo your ear and your eye agree? Visit the QR code to listen!\n\n\nPercentage of census tracts that are hotter than the average temperature for the entire city.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpecifically, the percentage of the population living below two times the federal poverty level.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpecifically, the age-adjusted rate of emergency department visits for asthma.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpecifically, the annual mean concentration of particulate matter in the air for the given region.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe percentage of area with tree canopy cover in 2018."
+  },
+  {
+    "objectID": "index.html#playing-all-variables-at-once",
+    "href": "index.html#playing-all-variables-at-once",
+    "title": "Can we understand the distribution of a variable using music?",
+    "section": "Playing all Variables at Once",
+    "text": "Playing all Variables at Once\nThere is no singular way to visualize all 5 variables at once, since we can only use 3 spatial dimensions for a visual. What do they all sound like played together?"
+  }
+]

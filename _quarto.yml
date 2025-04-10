@@ -1,0 +1,14 @@
+project:
+  type: website
+
+website:
+  title: "FisherDisplayOpenHouse" 
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+
