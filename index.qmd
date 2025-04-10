@@ -4,6 +4,7 @@ authors:
   - name: Donya Behroozi, Dr. Julia Schedler, Dr. Sinem Demirci
     affiliations: 
     - name: Statistics Department, Bailey College of Science and Mathematics
+bibliography: OpenHouse2025.bib
 format: 
   html:
     embed-resources: true
@@ -57,9 +58,9 @@ urb_T <- urb_T %>%
     )
 ```
 
-## Can you hear the shape of a distribution?
+## Do your ear and eye perceive the same information about a distribution?
 
-We have visualized 6 different variables containing data about the Central Coast area. Each distribution has a different shape, which you can see by looking at the histogram of each variable.
+Using the ggplot2 package [-@ggplot] in R [-@rlang], we visualized 5 different variables containing data about the Central Coast area. Each distribution has a different shape, which you can see by looking at the histogram of each variable.
 
 Each of the lines on the histogram represents the cutoff for 25% of the data, which gives us a five number summary.
 
@@ -73,9 +74,11 @@ Each of the lines on the histogram represents the cutoff for 25% of the data, wh
 
 : Color Legend
 
-We have also created sonifications of the five number summary then converted those numbers to music. The middle of the distribution is played first, then the 5 number summary is played.
+Using the gm package [@mao_gm_2024] to create sonifications by first finding the five number summary for each distribution, then converting those numbers to music. Sonification is the use of non-speech audio to covey information [@hermann_ch02-sonification_2011].
 
-Do your ear and your eye agree? Visit the QR code to listen!
+Our sonifications are based on the method of Flowers [-@flowers_sound_1993]. First, a leading tone for the middle of the distribution is played first, then the 5 number summary.
+
+Do your ear and your eye agree? Scroll down and compare the visualizations to the sonifications!
 
 ### Severe Heat Incidence
 
@@ -94,7 +97,7 @@ Percentage of census tracts that are hotter than the average temperature for the
  Notehead(6, shape = "diamond", color = "#E7298A")
   #fname = paste0("music/dist_", var_names[i], ".mp3")
   #export(music, path = paste(fname) )
-  show(music_indiv, to = "score")
+  show(music_indiv)
   
 urb_T %>% ggplot(aes(x = heat)) + geom_histogram(bins = 25) + geom_vline(xintercept = summary(urb_T$heat)[c(1,2,4:6)], col = c("#7570B3", "#1B9E77", "#E6AB02", "#D95F02", "#E7298A"), lwd = 2) + theme(panel.grid = element_blank(), plot.background = element_blank()) + ylab("Number of Neighborhoods") + xlab("Severe Heat Index")
 ```
@@ -265,3 +268,7 @@ music_all_variables <- Music() + Meter(4,4) +
 
 show(music_all_variables)
 ```
+
+## Learning more
+
+Contact [Dr. Julia Schedler](mailto:jschedle@calpoly.edu) with questions or comments! Thanks for perceiving!
