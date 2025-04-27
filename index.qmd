@@ -25,7 +25,7 @@ source("data_to_sonif.r")
 
 ## source https://gist.github.com/dimitre/439f5ab75a0c2e66c8c63fc9e8f7ea77
 
-freq_notes_all <- read.csv("note_freq_440_432.csv")
+freq_notes_all <- read.csv("data/note_freq_440_432.csv")
 freq_notes_all$note_names <- paste0(freq_notes_all$A,freq_notes_all$X0)
 
 
@@ -37,7 +37,7 @@ names(getnotenames) <- freq_notes$X27.5
 
 ## read in the data 
 
-urb_T_all <- read.csv("urban_tree.csv")
+urb_T_all <- read.csv("data/urban_tree.csv")
 
 
 ## just keep the raw data
@@ -65,7 +65,7 @@ Using the ggplot2 package [-@ggplot] in R [-@rlang], we visualized 5 different v
 Each of the lines on the histogram represents the cutoff for 25% of the data, which gives us a five number summary.
 
 | Statistic in 5 Number Summary | Meaning |
-|----|----|
+|------------------------------------|------------------------------------|
 | [Minimum]{style="background-color:#7570B3; color:white; display:block; text-align:center;"} | smallest value in the data set |
 | [Q1]{style="background-color:#1B9E77; color:white; display:block; text-align:center;"} | upper limit of smallest 25% of data values |
 | [Median]{style="background-color:#E6AB02; color:white; display:block; text-align:center;"} | middle value (50% of data values above and below this number) |
