@@ -5,4 +5,4 @@ This is the repository that contains the code that generates the website to acco
 Authors: Julia Schedler, Donya Behroozi, Sinem Demirci 
 
 ### License
-This work is licensed under the MIT License. Please don't hesitate to reach out if you have any questions about the code!
+This work is licensed under the MIT License. Please don't hesitate to reach out if you have any questions about the code or accessing the data we used!
